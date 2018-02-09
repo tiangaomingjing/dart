@@ -53,7 +53,7 @@ namespace dynamics {
 /// Entity class is inherited by using virtual inheritence to solve the
 /// so-called "diamond problem". Because of that, the Entity's constructor will
 /// be called directly by the most derived class's constructor.
-class Frame : public virtual Entity
+class Frame : public virtual Entity, virtual public common::Composite
 {
 public:
   friend class Entity;

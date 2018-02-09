@@ -32,3 +32,8 @@ install(
   DESTINATION include/dart/dynamics/detail
   COMPONENT headers
 )
+
+dart_format_add(
+  DifferentialBodyNodeAspect.hpp
+  DifferentialBodyNodeAspect.cpp
+)

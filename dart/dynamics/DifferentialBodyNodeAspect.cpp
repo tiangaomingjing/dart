@@ -30,74 +30,66 @@
  *   POSSIBILITY OF SUCH DAMAGE.
  */
 
-#ifndef DART_DYNAMICS_DETAIL_ENTITYNODEASPECT_HPP_
-#define DART_DYNAMICS_DETAIL_ENTITYNODEASPECT_HPP_
-
-#include "dart/dynamics/Node.hpp"
+#include "dart/dynamics/DifferentialBodyNodeAspect.hpp"
 
 namespace dart {
 namespace dynamics {
 
-template <class Base>
-class EntityNode;
-
 namespace detail {
 
 //==============================================================================
-struct EntityNodeProperties
+DifferenctialBodyNodeState::DifferenctialBodyNodeState()
 {
-  /// Name of the Entity/Node
-  std::string mName;
-
-  /// Default constructor
-  EntityNodeProperties(const std::string& name = "");
-
-  /// Implicit conversion to a string
-  operator const std::string&() const;
-};
-
-//==============================================================================
-template <class Base>
-using EntityNodeAspectBase =
-    common::EmbedProperties<EntityNode<Base>, EntityNodeProperties>;
-
-//==============================================================================
-template <class Base, bool isCompositeBase>
-class EntityNodeBase : public Base, public EntityNodeAspectBase<Base>
-{
-public:
-
-  /// Forwarding constructor
-  template <typename... Args>
-  EntityNodeBase(Args&&... args)
-    : Base(std::forward<Args>(args)...)
-  {
-    // Do nothing
-  }
-
-  virtual ~EntityNodeBase() = default;
-};
-
-//==============================================================================
-template <class Base>
-class EntityNodeBase<Base, true> : public common::Virtual <common::Virtual<common::CompositeJoiner<Base, EntityNodeAspectBase<Base>>>>
-{
-public:
-
-  /// Forwarding constructor
-  template <typename... Args>
-  EntityNodeBase(Args&&... args)
-    : common::Virtual <common::Virtual<common::CompositeJoiner<Base, EntityNodeAspectBase<Base>>>>(
-        common::NoArg, std::forward<Args>(args)...)
-  {
-    // Do nothing
-  }
-
-  virtual ~EntityNodeBase() = default;
-};
+  // Do nothing
+}
 
 } // namespace detail
-} // namespace dart
-} // namespace dynamics
 
-#endif // DART_DYNAMICS_DETAIL_ENTITYNODEASPECT_HPP_
+//==============================================================================
+DifferentiableBodyNodeAspect::DifferentiableBodyNodeAspect(
+    const StateData& state)
+  : DifferentiableBodyNodeAspect::Base(state)
+{
+  // Do nothing
+}
+
+//==============================================================================
+const Eigen::Vector6d&
+DifferentiableBodyNodeAspect::getSpatialVelocityDerivWrtQ(
+    std::size_t dofIndex) const
+{
+//  auto* frame = getFrame();
+
+//  if (frame->isWorld())
+//    return mState.mVq[dofIndex];
+
+//  if (mState.mIsVelocityDerivWrtQDirty[dofIndex])
+//  {
+//    auto* parentFrame = frame->getParentFrame();
+//    const Eigen::Isometry3d& tf = frame->getRelativeTransform();
+////    auto parentAspect = parentFrame->getAspect<ThisClass>();
+////    const Eigen::Vector6d& parentVq =
+////        parentAspect->getSpatialVelocityDerivWrtQ(dofIndex);
+
+////    mState.mVq[dofIndex] = math::AdInvT(tf, parentVq);
+
+//    mState.mIsVelocityDerivWrtQDirty[dofIndex] = false;
+//  }
+
+  return mState.mVq[dofIndex];
+}
+
+//==============================================================================
+Frame* DifferentiableBodyNodeAspect::getFrame()
+{
+  return mComposite;
+}
+
+//==============================================================================
+const Frame* DifferentiableBodyNodeAspect::getFrame() const
+{
+  return mComposite;
+}
+
+} // namespace dynamics
+} // namespace dart

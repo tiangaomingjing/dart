@@ -30,8 +30,8 @@
  *   POSSIBILITY OF SUCH DAMAGE.
  */
 
-#ifndef DART_DYNAMICS_DETAIL_GenericJointASPECT_HPP_
-#define DART_DYNAMICS_DETAIL_GenericJointASPECT_HPP_
+#ifndef DART_DYNAMICS_DETAIL_GENERICJOINTASPECT_HPP_
+#define DART_DYNAMICS_DETAIL_GENERICJOINTASPECT_HPP_
 
 #include "dart/math/Helpers.hpp"
 #include "dart/dynamics/Joint.hpp"
@@ -307,4 +307,4 @@ using GenericJointBase = common::EmbedStateAndPropertiesOnTopOf<
 } // namespace dynamics
 } // namespace dart
 
-#endif // DART_DYNAMICS_DETAIL_GenericJointASPECT_HPP_
+#endif // DART_DYNAMICS_DETAIL_GENERICJOINTASPECT_HPP_
