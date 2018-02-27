@@ -34,6 +34,13 @@ install(
 )
 
 dart_format_add(
+<<<<<<< HEAD
   DifferentialBodyNodeAspect.hpp
   DifferentialBodyNodeAspect.cpp
+=======
+  TranslationalJoint2D.hpp
+  TranslationalJoint2D.cpp
+  detail/TranslationalJoint2DAspect.hpp
+  detail/TranslationalJoint2DAspect.cpp
+>>>>>>> origin/release-6.4
 )

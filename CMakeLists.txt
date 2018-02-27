@@ -265,98 +265,45 @@ endif(DART_VERBOSE)
 
 add_subdirectory(dart)
 
+set(DART_IN_SOURCE_BUILD TRUE)
+
 if(TARGET dart)
 
   # Add a "tests" target to build unit tests.
   enable_testing()
   add_subdirectory(unittests EXCLUDE_FROM_ALL)
 
-  if (TARGET dart-utils-urdf AND TARGET dart-gui)
+  # Add example subdirectories and an "examples" target.
+  add_subdirectory(examples)
+  get_property(examples GLOBAL PROPERTY DART_EXAMPLES)
+  add_custom_target(examples DEPENDS ${examples})
 
-    # Add example targets
-    dart_add_example(examples/addDeleteSkels dart dart-utils-urdf dart-gui)
-    dart_add_example(examples/atlasSimbicon dart dart-utils-urdf dart-gui)
-    dart_add_example(examples/bipedStand dart dart-utils-urdf dart-gui)
-    dart_add_example(examples/hardcodedDesign dart dart-utils-urdf dart-gui)
-    dart_add_example(examples/hybridDynamics dart dart-utils-urdf dart-gui)
-    dart_add_example(examples/jointConstraints dart dart-utils-urdf dart-gui)
-    dart_add_example(examples/mixedChain dart dart-utils-urdf dart-gui)
-    dart_add_example(examples/operationalSpaceControl dart dart-utils-urdf dart-gui)
-    dart_add_example(examples/rigidChain dart dart-utils-urdf dart-gui)
-    dart_add_example(examples/rigidCubes dart dart-utils-urdf dart-gui)
-    dart_add_example(examples/rigidLoop dart dart-utils-urdf dart-gui)
-    dart_add_example(examples/rigidShapes dart dart-utils-urdf dart-gui)
-    dart_add_example(examples/simpleFrames dart dart-utils-urdf dart-gui)
-    dart_add_example(examples/softBodies dart dart-utils-urdf dart-gui)
-    dart_add_example(examples/speedTest dart dart-utils-urdf dart-gui)
-    dart_add_example(examples/vehicle dart dart-utils-urdf dart-gui)
+  if(DART_VERBOSE)
+    message(STATUS "")
+    message(STATUS "[ Examples ]")
+    foreach(example ${examples})
+      message(STATUS "Adding example: ${example}")
+    endforeach(example ${examples})
+  else(DART_VERBOSE)
+    list(LENGTH examples examples_length)
+    message(STATUS "Adding ${examples_length} examples")
+  endif(DART_VERBOSE)
 
-    if(TARGET dart-gui-osg)
-      dart_add_example(examples/osgExamples/osgAtlasPuppet dart dart-utils-urdf dart-gui-osg)
-      dart_add_example(examples/osgExamples/osgAtlasSimbicon dart dart-utils-urdf dart-gui-osg)
-      dart_add_example(examples/osgExamples/osgDragAndDrop dart dart-utils-urdf dart-gui-osg)
-      dart_add_example(examples/osgExamples/osgEmpty dart dart-utils-urdf dart-gui-osg)
-      dart_add_example(examples/osgExamples/osgHuboPuppet dart dart-utils-urdf dart-gui-osg)
-      dart_add_example(examples/osgExamples/osgImGui dart dart-utils-urdf dart-gui-osg)
-      dart_add_example(examples/osgExamples/osgOperationalSpaceControl dart dart-utils-urdf dart-gui-osg)
-      dart_add_example(examples/osgExamples/osgSoftBodies dart dart-utils-urdf dart-gui-osg)
-      dart_add_example(examples/osgExamples/osgTinkertoy dart dart-utils-urdf dart-gui-osg)
+  # Add a "tutorials" target to build tutorials.
+  add_subdirectory(tutorials)
+  get_property(tutorials GLOBAL PROPERTY DART_TUTORIALS)
+  add_custom_target(tutorials DEPENDS ${tutorials})
 
-      add_library(example_wamIk examples/osgExamples/osgWamIkFast/ikfast/ikfast71.Transform6D.4_6_9_10_11_12_f8.cpp)
-      target_link_libraries(example_wamIk PUBLIC dart)
-      target_compile_definitions(example_wamIk PUBLIC IKFAST_NO_MAIN IKFAST_CLIBRARY)
-      target_compile_options(example_wamIk PRIVATE -w)
-
-      dart_add_example(examples/osgExamples/osgWamIkFast dart dart-utils-urdf dart-gui-osg example_wamIk)
-    endif()
-
-    # Add an "examples" target to build examples.
-    get_property(examples GLOBAL PROPERTY DART_EXAMPLES)
-    add_custom_target(examples DEPENDS ${examples})
-
-    if(DART_VERBOSE)
-      message(STATUS "")
-      message(STATUS "[ Examples ]")
-      foreach(example ${examples})
-        message(STATUS "Adding example: ${example}")
-      endforeach(example ${examples})
-    else(DART_VERBOSE)
-      list(LENGTH examples examples_length)
-      message(STATUS "Adding ${examples_length} examples")
-    endif(DART_VERBOSE)
-
-    # Add tutorial targets
-    if(TARGET dart-collision-bullet)
-      dart_add_tutorial(tutorials/tutorialBiped dart-utils-urdf dart-gui dart-collision-bullet)
-      dart_add_tutorial(tutorials/tutorialBiped-Finished dart-utils-urdf dart-gui dart-collision-bullet)
-    else()
-      dart_add_tutorial(tutorials/tutorialBiped dart-utils-urdf dart-gui)
-      dart_add_tutorial(tutorials/tutorialBiped-Finished dart-utils-urdf dart-gui)
-    endif()
-
-    dart_add_tutorial(tutorials/tutorialCollisions dart-utils-urdf dart-gui)
-    dart_add_tutorial(tutorials/tutorialCollisions-Finished dart-utils-urdf dart-gui)
-    dart_add_tutorial(tutorials/tutorialDominoes dart-utils-urdf dart-gui)
-    dart_add_tutorial(tutorials/tutorialDominoes-Finished dart-utils-urdf dart-gui)
-    dart_add_tutorial(tutorials/tutorialMultiPendulum dart-utils-urdf dart-gui)
-    dart_add_tutorial(tutorials/tutorialMultiPendulum-Finished dart-utils-urdf dart-gui)
-
-    # Add a "tutorials" target to build tutorials.
-    get_property(tutorials GLOBAL PROPERTY DART_TUTORIALS)
-    add_custom_target(tutorials DEPENDS ${tutorials})
-
-    if(DART_VERBOSE)
-      message(STATUS "")
-      message(STATUS "[ Tutorials ]")
-      foreach(tutorial ${tutorials})
-        message(STATUS "Adding tutorial: ${tutorial}")
-      endforeach(tutorial ${tutorials})
-    else(DART_VERBOSE)
-      list(LENGTH tutorials tutorials_length)
-      message(STATUS "Adding ${tutorials_length} tutorials")
-    endif(DART_VERBOSE)
-
-  endif()
+  if(DART_VERBOSE)
+    message(STATUS "")
+    message(STATUS "[ Tutorials ]")
+    foreach(tutorial ${tutorials})
+      message(STATUS "Adding tutorial: ${tutorial}")
+    endforeach(tutorial ${tutorials})
+  else(DART_VERBOSE)
+    list(LENGTH tutorials tutorials_length)
+    message(STATUS "Adding ${tutorials_length} tutorials")
+  endif(DART_VERBOSE)
 
 endif()
 
@@ -518,6 +465,7 @@ if(DOXYGEN_FOUND)
   set(DOXYGEN_INPUT_ROOT       "${PROJECT_SOURCE_DIR}/dart"                   )
   set(DOXYGEN_EXTRA_INPUTS     "${PROJECT_SOURCE_DIR}/doxygen/mainpage.dox"   )
   set(DOXYGEN_EXCLUDE          "${PROJECT_SOURCE_DIR}/dart/external"          )
+  set(DOXYGEN_STRIP_FROM_PATH  "${CMAKE_CURRENT_SOURCE_DIR}"                  )
 
   # Generate a Doxyfile. This uses the variables:
   #
@@ -526,6 +474,7 @@ if(DOXYGEN_FOUND)
   # - DOXYGEN_EXTRA_INPUTS
   # - DOXYGEN_INPUT_ROOT
   # - DOXYGEN_EXCLUDE
+  # - DOXYGEN_STRIP_FROM_PATH
   configure_file(${DOXYGEN_DOXYFILE_IN} ${DOXYGEN_DOXYFILE} @ONLY)
   file(
     COPY "${PROJECT_SOURCE_DIR}/doxygen/DART logo.png"
@@ -536,6 +485,14 @@ if(DOXYGEN_FOUND)
     COMMAND ${CMAKE_COMMAND} -E echo_append "Building API Documentation..."
     COMMAND ${DOXYGEN_EXECUTABLE} -u ${DOXYGEN_DOXYFILE}
     COMMAND ${DOXYGEN_EXECUTABLE} ${DOXYGEN_DOXYFILE}
+    # Strip path prefix from all paths in dart.tag
+    COMMAND ${CMAKE_COMMAND} -E echo "Stripping paths from"
+        "${DOXYGEN_GENERATE_TAGFILE}"
+    COMMAND sed -i s:${DOXYGEN_STRIP_FROM_PATH}::g ${DOXYGEN_GENERATE_TAGFILE}
+    # Strip all doxygen="path" HTML tags
+    COMMAND ${CMAKE_COMMAND} -E echo "Stripping Doxygen HTML tags"
+    COMMAND find "${DOXYGEN_OUTPUT_ROOT}" -type f -name "*.html"
+        -exec sed -i 's: doxygen=\"[^\"]*\"::g' {} \\$<SEMICOLON>
     COMMAND ${CMAKE_COMMAND} -E echo "Done."
     WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}/doxygen
     DEPENDS ${DOXYGEN_DOXYFILE}

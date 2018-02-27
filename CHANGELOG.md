@@ -2,15 +2,28 @@
 
 ### DART 6.4.0 (201X-XX-XX)
 
+* Common
+
+  * Added ResourceRetriever::getFilePath(): [#972](https://github.com/dartsim/dart/pull/972)
+
 * Kinematics/Dynamics
 
+  * Added relative Jacobian functions to MetaSkeleton: [#997](https://github.com/dartsim/dart/pull/997)
+  * Added vectorized joint limit functions: [#996](https://github.com/dartsim/dart/pull/996)
   * Added lazy evaluation for shape's volume and bounding-box computation: [#959](https://github.com/dartsim/dart/pull/959)
   * Added IkFast support as analytic IK solver: [#887](https://github.com/dartsim/dart/pull/887)
+  * Added TranslationalJoint2D: [#1003](https://github.com/dartsim/dart/pull/1003)
   * Fixed NaN values caused by zero-length normals in ContactConstraint: [#881](https://github.com/dartsim/dart/pull/881)
+  * Extended BodyNode::createShapeNode() to accept more types of arguments: [#986](https://github.com/dartsim/dart/pull/986)
 
 * Collision detection
 
   * Added FCL 0.6 support (backport of #873): [#936](https://github.com/dartsim/dart/pull/936)
+
+* GUI
+
+  * Added support of rendering texture images: [#973](https://github.com/dartsim/dart/pull/973)
+  * Added OSG shadows: [#978](https://github.com/dartsim/dart/pull/978)
 
 * License
 
@@ -19,9 +32,12 @@
 * Misc
 
   * Added World::create(): [#962](https://github.com/dartsim/dart/pull/962)
+  * Added MetaSkeleton::hasBodyNode() and MetaSkeleton::hasJoint(): [#1000](https://github.com/dartsim/dart/pull/1000)
   * Suppressed -Winjected-class-name warnings from Clang 5.0.0: [#964](https://github.com/dartsim/dart/pull/964)
   * Suppressed -Wdangling-else warnings from GCC 7.2.0: [#937](https://github.com/dartsim/dart/pull/937)
+  * Changed console macros to use global namespace resolutions: [#1010](https://github.com/dartsim/dart/pull/1010)
   * Fixed various build issues with Visual Studio: [#956](https://github.com/dartsim/dart/pull/956)
+  * Removed TinyXML dependency: [#993](https://github.com/dartsim/dart/pull/993)
 
 ### [DART 6.3.0 (2017-10-04)](https://github.com/dartsim/dart/milestone/36?closed=1)
 
