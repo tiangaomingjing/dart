@@ -52,6 +52,9 @@
 #if HAVE_IPOPT
   #include "dart/optimizer/ipopt/IpoptSolver.hpp"
 #endif
+#if HAVE_PAGMO
+  #include "dart/optimizer/pagmo/PagmoSolver.hpp"
+#endif
 #if HAVE_SNOPT
   #include "dart/optimizer/snopt/SnoptSolver.hpp"
 #endif
@@ -203,6 +206,37 @@ TEST(Optimizer, BasicIpopt)
   EXPECT_NEAR(optX[1], 0.296296, 1e-6);
 }
 #endif
+
+//==============================================================================
+#if HAVE_PAGMO
+TEST(Optimizer, BasicPagmo)
+{
+  std::shared_ptr<Problem> prob = std::make_shared<Problem>(2);
+
+  prob->setLowerBounds(Eigen::Vector2d(-10, 0));
+  prob->setUpperBounds(Eigen::Vector2d(10, 10));
+  prob->setInitialGuess(Eigen::Vector2d(1.234, 5.678));
+
+  FunctionPtr obj = std::make_shared<SampleObjFunc>();
+  prob->setObjective(obj);
+
+  FunctionPtr const1 = std::make_shared<SampleConstFunc>( 2, 0);
+  FunctionPtr const2 = std::make_shared<SampleConstFunc>(-1, 1);
+  prob->addIneqConstraint(const1);
+  prob->addIneqConstraint(const2);
+
+  PagmoSolver solver(prob);
+  solver.solve();
+
+  double minF = prob->getOptimumValue();
+  Eigen::VectorXd optX = prob->getOptimalSolution();
+
+  EXPECT_NEAR(minF, 0.544330847, 1e-6);
+  EXPECT_EQ(static_cast<std::size_t>(optX.size()), prob->getDimension());
+  EXPECT_NEAR(optX[0], 0.333334, 1e-6);
+  EXPECT_NEAR(optX[1], 0.296296, 1e-6);
+}
+#endif // HAVE_PAGMO
 
 //==============================================================================
 #if HAVE_SNOPT

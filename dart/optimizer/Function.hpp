@@ -84,6 +84,7 @@ protected:
 };
 
 typedef std::shared_ptr<Function> FunctionPtr;
+typedef std::unique_ptr<Function> UniqueFunctionPtr;
 
 typedef std::function<double(const Eigen::VectorXd&)> CostFunction;
 
